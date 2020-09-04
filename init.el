@@ -30,7 +30,10 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(html
+   '(javascript
+     yaml
+     csv
+     html
      python
      clojure
      ;; ----------------------------------------------------------------
@@ -40,7 +43,10 @@ values."
      ;; ----------------------------------------------------------------
      helm
      neotree
+     javascript
      django
+     lsp
+     docker
      evil-commentary
      auto-completion
      better-defaults
@@ -51,7 +57,6 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     spell-checking
      multiple-cursors
      syntax-checking
      debug
@@ -63,8 +68,11 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(zenburn-theme pyenv django-commandsyasnippet-snippets
-                                                    pdf-tools)
+   dotspacemacs-additional-packages '(zenburn-theme
+                                      terminal-here
+                                      django-commands
+                                      yasnippet-snippets
+                                      pdf-tools)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -137,8 +145,8 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ;spacemacs-dark
-                         ;spacemacs-light
+                         ;; spacemacs-dark
+                         ;; spacemacs-light
                          zenburn
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -146,7 +154,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 28
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -318,6 +326,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (display-time-mode 1)
   )
 
 (defun dotspacemacs/user-config ()
@@ -327,6 +336,13 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (defun terminal-here-default-terminal-command (_dir)
+    "Pick a good default command to use for DIR."
+      (list "open" "-a" "iTerm" "."))
+  (setq org-todo-keywords '((sequence "TODO" "PROG" "|" "DONE")))
+  (setq org-projectile-projects-file
+        "/Volumes/ssd/dev/org-files/todos.org")
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -355,7 +371,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(django-commands-shell-args '("-i" "python"))
  '(evil-want-Y-yank-to-eol nil)
+ '(helm-completion-style 'emacs)
  '(hl-todo-keyword-faces
    '(("TODO" . "#dc752f")
      ("NEXT" . "#dc752f")
@@ -372,8 +390,9 @@ This function is called at the very end of Spacemacs initialization."
      ("FIXME" . "#dc752f")
      ("XXX+" . "#dc752f")
      ("\\?\\?\\?+" . "#dc752f")))
+ '(org-agenda-files nil)
  '(package-selected-packages
-   '(pdf-tools tablist evil-nerd-commenter zenburn-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu elisp-slime-nav dumb-jump diminish diff-hl define-word company-statistics column-enforce-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+   '(evil-nerd-commenter zenburn-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu elisp-slime-nav dumb-jump diminish diff-hl define-word company-statistics column-enforce-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
