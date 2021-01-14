@@ -334,7 +334,22 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (display-time-mode 1)
+  (setq org-confirm-babel-evaluate nil)
   (add-hook 'python-mode-hook 'yapf-mode)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (awk . t)
+     (C . t)
+     (emacs-lisp . t)
+     (js . t)
+     (http . t)
+     (sql . t)
+     (python . t)
+     (scheme . t)
+     (shell . t)
+     ))
+
   (setq-default dotspacemacs-configuration-layers '(
                                                     (python :variables python-format-on-save t)))
   )
