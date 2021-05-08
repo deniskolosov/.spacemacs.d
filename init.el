@@ -30,7 +30,8 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(sql
+   '(typescript
+     sql
      rust
      systemd
      nginx
@@ -39,10 +40,10 @@ values."
      csv
      html
      (python :variables
-             python-shell-interpreter 'python3
-             python-backend 'lsp python-lsp-server 'mspyls
+             python-backend 'anaconda
              python-test-runner 'pytest)
      (clojure :variables
+              clojure-backend 'cider
               clojure-enable-clj-refactor t
               clojure-enable-linters 'clj-kondo)
      ;; ----------------------------------------------------------------
@@ -52,9 +53,9 @@ values."
      ;; ----------------------------------------------------------------
      helm
      neotree
+     pdf
      javascript
      django
-     lsp
      github
      scheme
      docker
@@ -69,7 +70,6 @@ values."
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      multiple-cursors
-     syntax-checking
      debug
      (version-control :variables
                       version-control-diff-tool 'diff-hl
@@ -80,13 +80,11 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(zenburn-theme
-                                      terminal-here
                                       geiser-mit
                                       ob-sql-mode
                                       ob-http
                                       django-commands
-                                      yasnippet-snippets
-                                      pdf-tools)
+                                      yasnippet-snippets)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -331,7 +329,6 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   dotspacemacs-configuration-layers '(pdf)
    ))
 
 (defun dotspacemacs/user-init ()
@@ -343,6 +340,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (display-time-mode 1)
   (setq org-confirm-babel-evaluate nil)
+  (setq lsp-ui-doc-enable nil)
   (setq-default dotspacemacs-configuration-layers '(
                                                     (python :variables python-sort-imports-on-save t)))
   )
@@ -373,7 +371,9 @@ you should place your code here."
      (shell . t)
      (http . t)
      ))
+  (setq org-export-with-sub-superscripts nil)
   (setq org-todo-keywords '((sequence "TODO" "PROG" "|" "DONE")))
+  (setq nrepl-use-ssh-fallback-for-remote-hosts t)
   (setq doc-view-resolution 400)
   (evil-leader/set-key "/" 'spacemacs/helm-project-do-ag)
   (setq helm-ag-base-command "rg -S --no-heading")
@@ -432,7 +432,7 @@ This function is called at the very end of Spacemacs initialization."
      ("\\?\\?\\?+" . "#dc752f")))
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(dap-mode lsp-treemacs bui treemacs cfrs pfuture posframe evil-nerd-commenter zenburn-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu elisp-slime-nav dumb-jump diminish diff-hl define-word company-statistics column-enforce-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+   '(typescript-mode import-js grizzl add-node-modules-path evil-nerd-commenter zenburn-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu elisp-slime-nav dumb-jump diminish diff-hl define-word company-statistics column-enforce-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
