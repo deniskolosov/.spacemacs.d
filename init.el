@@ -34,6 +34,7 @@ values."
      sql
      rust
      systemd
+     syntax-checking
      nginx
      javascript
      yaml
@@ -83,6 +84,7 @@ values."
                                       geiser-mit
                                       ob-sql-mode
                                       ob-http
+                                      shx
                                       django-commands
                                       yasnippet-snippets)
    ;; A list of packages that cannot be updated.
@@ -160,6 +162,9 @@ values."
                          ;; spacemacs-dark
                          ;; spacemacs-light
                          zenburn
+                         subatomic
+                         smyx
+                         masapahit-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -169,7 +174,7 @@ values."
                                :size 18
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -340,9 +345,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (display-time-mode 1)
   (setq org-confirm-babel-evaluate nil)
+  (setq cider-test-show-report-on-success t)
   (setq lsp-ui-doc-enable nil)
-  (setq-default dotspacemacs-configuration-layers '(
-                                                    (python :variables python-sort-imports-on-save t)))
   )
 
 (defun dotspacemacs/user-config ()
@@ -358,6 +362,10 @@ you should place your code here."
     (list "open" "-a" "iTerm" "."))
   (require 'ob-sql-mode)
   (global-company-mode t)
+  (spacemacs/toggle-fringe-off)
+  (spacemacs/toggle-visual-line-numbers-off)
+  (spacemacs/toggle-truncate-lines-on)
+  (shx-global-mode 1)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '(
