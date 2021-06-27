@@ -344,8 +344,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (display-time-mode 1)
   (setq org-confirm-babel-evaluate nil)
-  (setq org-directory "~/org")
-  (setq org-agenda-files (list "inbox.org"))
   (setq cider-test-show-report-on-success t)
   (setq lsp-ui-doc-enable nil)
   )
