@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(typescript
+     unicode-fonts
      sql
      rust
      systemd
@@ -163,9 +164,7 @@ values."
                          ;; spacemacs-light
                          zenburn
                          subatomic
-                         smyx
-                         masapahit-dark
-                         )
+                         smyx)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -345,6 +344,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (display-time-mode 1)
   (setq org-confirm-babel-evaluate nil)
+  (setq org-directory "~/org")
+  (setq org-agenda-files (list "inbox.org"))
   (setq cider-test-show-report-on-success t)
   (setq lsp-ui-doc-enable nil)
   )
